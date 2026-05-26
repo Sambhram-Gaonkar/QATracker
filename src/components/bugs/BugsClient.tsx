@@ -12,6 +12,7 @@ import { Select } from "@/components/ui/Select";
 import { BugForm, type BugFormValues } from "@/components/bugs/BugForm";
 import { BugTable } from "@/components/bugs/BugTable";
 import { ExportButtons } from "@/components/exports/ExportButtons";
+import { ImportReportButton } from "@/components/imports/ImportReportButton";
 import { BUG_STATUSES, PRIORITIES, SEVERITIES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
 import { getSignedInWorkspace } from "@/lib/clientWorkspace";
@@ -111,7 +112,18 @@ export function BugsClient({ projectId }: { projectId: string }) {
         <Button onClick={() => { setEditing(null); setOpen(true); }}><Plus className="mr-2 h-4 w-4" />Add Bug</Button>
       </div>
       {bugs.length === 0 ? <EmptyState title="No bug reports yet" description="Log the first bug and attach screenshot proof when needed." action={<Button onClick={() => setOpen(true)}>Add Bug</Button>} /> : <BugTable bugs={filtered} onEdit={(bug) => { setEditing(bug); setOpen(true); }} onDelete={setDeleting} />}
-      {project ? <ExportButtons project={project} testCases={testCases} bugs={bugs} /> : null}
+      {project ? (
+        <div className="flex flex-wrap items-start gap-3">
+          <ExportButtons project={project} testCases={testCases} bugs={bugs} />
+          <ImportReportButton
+            project={project}
+            existingTestCases={testCases}
+            existingBugs={bugs}
+            mode="bugs"
+            onImported={load}
+          />
+        </div>
+      ) : null}
       <Modal title={editing ? "Edit Bug" : "Add Bug"} open={open} onClose={() => setOpen(false)}>
         <BugForm bug={editing} suggestedId={generateBugId(bugs.length)} onSubmit={save} />
       </Modal>

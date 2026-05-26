@@ -10,6 +10,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Modal } from "@/components/ui/Modal";
 import { Select } from "@/components/ui/Select";
 import { ExportButtons } from "@/components/exports/ExportButtons";
+import { ImportReportButton } from "@/components/imports/ImportReportButton";
 import { TestCaseForm, type TestCaseFormValues } from "@/components/test-cases/TestCaseForm";
 import { TestCaseTable } from "@/components/test-cases/TestCaseTable";
 import { PRIORITIES, TEST_CASE_STATUSES } from "@/lib/constants";
@@ -112,7 +113,18 @@ export function TestCasesClient({ projectId }: { projectId: string }) {
         <Button onClick={() => { setEditing(null); setOpen(true); }}><Plus className="mr-2 h-4 w-4" />Add Test Case</Button>
       </div>
       {testCases.length === 0 ? <EmptyState title="No test cases yet" description="Add your first test case for this project." action={<Button onClick={() => setOpen(true)}>Add Test Case</Button>} /> : <TestCaseTable testCases={filtered} onEdit={(item) => { setEditing(item); setOpen(true); }} onDelete={setDeleting} onStatusChange={updateStatus} />}
-      {project ? <ExportButtons project={project} testCases={testCases} bugs={bugs} /> : null}
+      {project ? (
+        <div className="flex flex-wrap items-start gap-3">
+          <ExportButtons project={project} testCases={testCases} bugs={bugs} />
+          <ImportReportButton
+            project={project}
+            existingTestCases={testCases}
+            existingBugs={bugs}
+            mode="test_cases"
+            onImported={load}
+          />
+        </div>
+      ) : null}
       <Modal title={editing ? "Edit Test Case" : "Add Test Case"} open={open} onClose={() => setOpen(false)}>
         <TestCaseForm testCase={editing} suggestedId={generateTestCaseId(testCases.length)} onSubmit={save} />
       </Modal>

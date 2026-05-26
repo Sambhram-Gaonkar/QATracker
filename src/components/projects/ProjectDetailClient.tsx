@@ -11,6 +11,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Modal } from "@/components/ui/Modal";
 import { ProjectForm, type ProjectFormValues } from "@/components/projects/ProjectForm";
 import { ExportButtons } from "@/components/exports/ExportButtons";
+import { ImportReportButton } from "@/components/imports/ImportReportButton";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { createClient } from "@/lib/supabase/client";
 import { getSignedInWorkspace } from "@/lib/clientWorkspace";
@@ -104,6 +105,14 @@ export function ProjectDetailClient({ projectId }: { projectId: string }) {
           <LinkButton href={`/projects/${project.id}/bugs`} variant="secondary">Manage Bugs</LinkButton>
         </div>
         <div className="mt-5"><ExportButtons project={project} testCases={testCases} bugs={bugs} /></div>
+        <div className="mt-4">
+          <ImportReportButton
+            project={project}
+            existingTestCases={testCases}
+            existingBugs={bugs}
+            onImported={load}
+          />
+        </div>
       </Card>
       <Modal title="Edit Project" open={editOpen} onClose={() => setEditOpen(false)}>
         <ProjectForm project={project} onSubmit={updateProject} />

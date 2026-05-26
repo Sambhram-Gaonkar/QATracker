@@ -11,6 +11,7 @@ QATrackr is a B2B SaaS MVP for manual QA testers, freelance testers, QA trainees
 - Project CRUD with search, status filter, edit, and delete confirmation
 - Test case CRUD with filters, quick status update, automatic `TC-001` IDs, and Excel export
 - Bug report CRUD with filters, colored severity/status badges, automatic `BUG-001` IDs, screenshot proof upload, and Excel export
+- Excel/CSV import for existing QA sheets, including multi-sheet workbooks with separate test case and bug report tabs
 - Cross-project dashboard and reports with Recharts
 - Free plan enforcement: 1 project, 20 test cases, 10 bugs
 - Billing page with Free, Pro, and Team plans plus Stripe TODO placeholders
@@ -132,7 +133,37 @@ If email confirmation is enabled in Supabase, confirm the email first, then log 
 - Test cases: open the project, add test cases for Login, Registration, Product Search, Cart, Checkout, Payment, and Dashboard.
 - Bug reports: add bugs and upload a screenshot proof file.
 - Excel export: use Export Test Cases, Export Bugs, and Export Full Report from project pages.
+- Excel/CSV import: open a project detail page and use Import Excel/CSV to import all matching test case and bug sheets. Open the Test Cases or Bugs pages to import only that data type.
 - Free limits: on Free plan, attempt to create more than 1 project, 20 test cases, or 10 bugs.
+
+## Excel and CSV Import Format
+
+QATrackr detects headers automatically, so files can include report title rows above the actual table headers. Multi-sheet `.xlsx` files are supported.
+
+Supported test case columns:
+- Module
+- Test Case ID
+- Title
+- Preconditions
+- Test Steps
+- Expected Result
+- Actual Result
+- Priority
+- Status
+
+Supported bug report columns:
+- Bug ID
+- Bug Title
+- Module/Feature
+- Test Steps
+- Expected Result
+- Actual Result
+- Severity
+- Priority
+- Proof
+- Status
+
+If a test case row has a blank Module, QATrackr uses the previous non-empty Module from that sheet. Bug status `New` is imported as `Open`.
 
 ## Sample Data
 
