@@ -1,7 +1,18 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import type { Organization } from "@/types/app";
+
+const demoUser = {
+  id: "local-demo-user",
+  email: "demo@qatrackr.local",
+};
+
+function isLocalDemoMode() {
+  return !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+}
 
 export async function getCurrentUser() {
+  if (isLocalDemoMode()) return demoUser;
   const supabase = await createClient();
   const {
     data: { user },
@@ -16,6 +27,17 @@ export async function requireAuth() {
 }
 
 export async function getCurrentOrganization() {
+  if (isLocalDemoMode()) {
+    return {
+      id: "local-demo-organization",
+      name: "My Workspace",
+      owner_id: "local-demo-user",
+      plan: "pro",
+      created_at: null,
+      updated_at: null,
+    } satisfies Organization;
+  }
+
   const supabase = await createClient();
   const user = await requireAuth();
   const { data } = await supabase

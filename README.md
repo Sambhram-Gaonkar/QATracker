@@ -97,6 +97,16 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+### Local Demo Mode Without Supabase
+
+If `NEXT_PUBLIC_SUPABASE_URL` or `NEXT_PUBLIC_SUPABASE_ANON_KEY` is missing, QATrackr automatically runs in local demo mode. Demo mode uses browser `localStorage` with a built-in user:
+
+- Email: `demo@qatrackr.local`
+- Workspace: `My Workspace`
+- Plan: `pro`
+
+This lets you open `/dashboard`, create projects, add test cases, add bug reports, use filters, edit/delete records, and test Excel exports locally before connecting Supabase. Data is stored only in the browser where you test it.
+
 Production checks:
 
 ```bash
