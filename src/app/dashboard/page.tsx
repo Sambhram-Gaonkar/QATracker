@@ -1,0 +1,10 @@
+import { DashboardClient } from "@/components/dashboard/DashboardClient";
+import { DashboardShell } from "@/components/layout/DashboardShell";
+
+export default function DashboardPage() {
+  return (
+    <DashboardShell title="Dashboard">
+      <DashboardClient />
+    </DashboardShell>
+  );
+}
